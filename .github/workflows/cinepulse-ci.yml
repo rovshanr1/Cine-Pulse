@@ -24,13 +24,13 @@ jobs:
             -project Cine-Pulse.xcodeproj \
             -scheme Cine-Pulse \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.0'
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.0'
       - name: Run Tests
         run: |
           xcodebuild test \
             -project Cine-Pulse.xcodeproj \
             -scheme Cine-Pulse \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.0'
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.0'
 
 
