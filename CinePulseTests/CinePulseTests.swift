@@ -36,4 +36,22 @@ final class CinePulseTests: XCTestCase {
         
         wait(for: [expextation], timeout: 5)
     }
+    
+    func testMovieDetails() {
+        let expectation = XCTestExpectation(description: "Fetch movie deteils from TMDB")
+        
+        networking.fetchData(TMDBEndpoint.movieDetails(id: 550))
+            .sink(receiveCompletion: { completion in
+                if case .failure(let failure) = completion {
+                    XCTFail("Request failed with error: \(failure)")
+                }
+                expectation.fulfill()
+            }, receiveValue: {( response: MovieDetailModel) in
+                XCTAssertFalse(response.genres.isEmpty, "Movie genres should not be empty")
+                print("Recived genre list: \(response.genres.count)")
+            })
+            .store(in: &cancellables)
+        
+        wait(for: [expectation], timeout: 15)
+    }
 }
