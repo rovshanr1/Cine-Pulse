@@ -7,11 +7,6 @@ Key.xcconfig
 .LSOverride
 ._*
 
-
-Info.plist
-**/Info.plist
-*.plist
-
 # Swift Package Manager
 # Ignore Swift Package Manager build artifacts and dependencies
 .build/
