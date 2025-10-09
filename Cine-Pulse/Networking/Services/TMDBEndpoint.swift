@@ -13,7 +13,6 @@ enum TMDBEndpoint: Endpoint{
     case movieCredits(id: Int)
     
     
-    
     var baseURL: String{
         return "https://api.themoviedb.org"
     }
@@ -53,7 +52,6 @@ enum TMDBEndpoint: Endpoint{
             }
             
             return items
-            
         default:
             return nil
         }

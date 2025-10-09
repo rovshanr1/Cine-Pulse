@@ -52,6 +52,6 @@ final class CinePulseTests: XCTestCase {
             })
             .store(in: &cancellables)
         
-        wait(for: [expectation], timeout: 15)
+        wait(for: [expectation], timeout: 5)
     }
 }
