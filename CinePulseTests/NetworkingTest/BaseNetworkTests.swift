@@ -1,5 +1,5 @@
 //
-//  CinePulseTests.swift
+//  BaseNetworkTests..swift
 //  CinePulseTests
 //
 //  Created by Rovshan Rasulov on 05.10.25.
@@ -9,7 +9,7 @@ import XCTest
 import Combine
 @testable import Cine_Pulse
 
-final class CinePulseTests: XCTestCase {
+final class BaseNetworkTests: XCTestCase {
 
     var cancellables: Set<AnyCancellable> = []
     var networking: BaseNetworking!

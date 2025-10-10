@@ -31,14 +31,14 @@ class MovieListViewModel: ObservableObject {
                 isLoading = false
              
                 if case .failure(let error) = completion {
-                    self.error = "\(MovieError.failToFetchMovies)"
+                    self.error = error.localizedDescription
                 }
+                
             } receiveValue: { [weak self] (response: MovieListModel) in
                 guard let self = self else { return }
                 
                 self.movieList = response.results
             }
             .store(in: &cancellables)
-            
     }
 }

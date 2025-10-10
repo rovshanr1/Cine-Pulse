@@ -36,6 +36,7 @@ class PopularMovieViewModel: ObservableObject{
         errorMessage = nil
         
         networking.fetchData(TMDBEndpoint.movieList(query: nil, page: currentPage))
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 guard let self = self else { return }
                 self.isLoading = false

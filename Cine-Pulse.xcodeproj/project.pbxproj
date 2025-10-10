@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		44A68B412E98398B00336F89 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 44A68B402E98398B00336F89 /* Kingfisher */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		4460EDC62E91D50C00ECB2EB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -53,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44A68B412E98398B00336F89 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +109,7 @@
 			);
 			name = "Cine-Pulse";
 			packageProductDependencies = (
+				44A68B402E98398B00336F89 /* Kingfisher */,
 			);
 			productName = "Cine-Pulse";
 			productReference = 4460ED202E8F18FC00ECB2EB /* Cine-Pulse.app */;
@@ -160,6 +166,9 @@
 			);
 			mainGroup = 4460ED172E8F18FC00ECB2EB;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				44396E892E98390900F7A365 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4460ED212E8F18FC00ECB2EB /* Products */;
 			projectDirPath = "";
@@ -466,6 +475,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		44396E892E98390900F7A365 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		44A68B402E98398B00336F89 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 44396E892E98390900F7A365 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4460ED182E8F18FC00ECB2EB /* Project object */;
 }

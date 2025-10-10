@@ -11,28 +11,30 @@ class CinePulseViewController: UIViewController {
     
     //Combine
     private var cancellables = Set<AnyCancellable>()
+    
+    //ViewModels
+    private var vm = MovieListViewModel()
+    
     //Views
     private let contentView = MovieListView()
     private let vc = PopularMoviesVC()
     
-    //Model
-    private var movieListModel: MovieListModel?
-    
-    //identifier
-    let reusablePopularMovieCell: String = "PopularMovieCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = UIColor(named: "Background")
         
         setupUI()
         navigationActions()
+        
+        bindViewModel()
+        vm.fetchMovies()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
+       
     }
     
     //MARK: - Navigation Bar Style
@@ -61,6 +63,32 @@ class CinePulseViewController: UIViewController {
         ])
     }
     
+    //MARK: - Binding View Model
+    private func bindViewModel(){
+        vm.$movieList
+            .sink(receiveValue: { [weak self] movie in
+            guard let self = self else { return }
+                self.contentView.configure(with: movie)
+        })
+            .store(in: &cancellables)
+        
+        
+        vm.$error
+            .receive(on: DispatchQueue.main)
+            .sink {[weak self] error in
+                guard let self = self else { return }
+                
+                if let error = error {
+                    guard self.presentedViewController == nil else { return }
+                    
+                    let alert = UIAlertController(title: "Oops, something went wrong", message: error, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
     //MARK: - Navigation
     private func navigationActions(){
         contentView.popularMovieNavigationButton.addTarget(self, action: #selector(navigationToPopularMovies), for: .touchUpInside)
@@ -72,18 +100,5 @@ class CinePulseViewController: UIViewController {
     }
 }
 
-
-//MARK: - Collection View Data Source
-//extension CinePulseViewController: UICollectionViewDataSource {
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        <#code#>
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        <#code#>
-//    }
-//    
-//    
-//}
 
 
