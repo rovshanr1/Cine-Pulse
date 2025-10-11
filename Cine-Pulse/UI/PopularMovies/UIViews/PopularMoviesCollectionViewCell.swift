@@ -1,16 +1,16 @@
 //
-//  MovieCollectionViewCell.swift
+//  PopularMoviesCollectionViewCell.swift
 //  Cine-Pulse
 //
-//  Created by Rovshan Rasulov on 09.10.25.
+//  Created by Rovshan Rasulov on 12.10.25.
 //
 
 import UIKit
 import Kingfisher
 
-class MovieCollectionViewCell: UICollectionViewCell{
-
-    private var movieImage: UIImageView = {
+class PopularMoviesCollectionViewCell: UICollectionViewCell {
+    
+    private var popularMovieImageView: UIImageView = {
        let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
@@ -18,7 +18,7 @@ class MovieCollectionViewCell: UICollectionViewCell{
         return image
     }()
     
-    override init(frame: CGRect){
+    override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
         setupStyle()
@@ -26,14 +26,15 @@ class MovieCollectionViewCell: UICollectionViewCell{
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        movieImage.image = nil
+        popularMovieImageView.image = nil
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupStyle(){
+    private func setupStyle() {
+    
         contentView.layer.cornerRadius = 10
         contentView.layer.borderWidth = 0.5
         contentView.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
@@ -41,17 +42,17 @@ class MovieCollectionViewCell: UICollectionViewCell{
     }
     
     private func setupViews(){
-        contentView.addSubview(movieImage)
+        contentView.addSubview(popularMovieImageView)
         
         NSLayoutConstraint.activate([
-            movieImage.topAnchor.constraint(equalTo: self.topAnchor),
-            movieImage.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            movieImage.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            movieImage.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            popularMovieImageView.topAnchor.constraint(equalTo: self.topAnchor),
+            popularMovieImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            popularMovieImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            popularMovieImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
     
-    func configureMoviesCollection(with movieList: MovieListModel.Movie){
-        movieImage.kf.setImage(with: movieList.posterURL)
+    func configurePopularMoviesCollection(with movieList: MovieListModel.Movie){
+        popularMovieImageView.kf.setImage(with: movieList.posterURL)
     }
-} 
+}

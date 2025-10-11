@@ -10,7 +10,7 @@ import UIKit
 class MovieListView: UIView {
     
     //identifier
-    let reusableCell: String = "PopularMovieCell"
+    private let reusableCell: String = "PopularMovieCell"
     
     //Movies
     private var movies: [MovieListModel.Movie] = []
@@ -23,7 +23,7 @@ class MovieListView: UIView {
     }()
     
     
-    let popularMovieCollection: UICollectionView = {
+    let popularThisWeekMovieCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -46,28 +46,29 @@ class MovieListView: UIView {
     
     private func setupUI(){
         addSubview(popularMovieNavigationButton)
-        addSubview(popularMovieCollection)
+        addSubview(popularThisWeekMovieCollection)
         
-        popularMovieCollection.translatesAutoresizingMaskIntoConstraints = false
-        popularMovieCollection.delegate = self
-        popularMovieCollection.dataSource = self
-        popularMovieCollection.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: reusableCell)
+        popularThisWeekMovieCollection.translatesAutoresizingMaskIntoConstraints = false
+        popularThisWeekMovieCollection.delegate = self
+        popularThisWeekMovieCollection.dataSource = self
+        popularThisWeekMovieCollection.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: reusableCell)
         
         NSLayoutConstraint.activate([
             popularMovieNavigationButton.topAnchor.constraint(equalTo: topAnchor, constant: 12),
             popularMovieNavigationButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             popularMovieNavigationButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             
-            popularMovieCollection.topAnchor.constraint(equalTo: popularMovieNavigationButton.bottomAnchor, constant: 12),
-            popularMovieCollection.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            popularMovieCollection.heightAnchor.constraint(equalToConstant: 225)
+            popularThisWeekMovieCollection.topAnchor.constraint(equalTo: popularMovieNavigationButton.bottomAnchor, constant: 12),
+            popularThisWeekMovieCollection.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            popularThisWeekMovieCollection.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
+            popularThisWeekMovieCollection.heightAnchor.constraint(equalToConstant: 225)
         ])
     }
     
-    func configure(with movies: [MovieListModel.Movie]){
+    func configurePopularThisWeekMovies(with movies: [MovieListModel.Movie]){
         self.movies = movies
         DispatchQueue.main.async {
-            self.popularMovieCollection.reloadData()
+            self.popularThisWeekMovieCollection.reloadData()
         }
     }
     
@@ -83,7 +84,7 @@ extension MovieListView: UICollectionViewDataSource{
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusableCell, for: indexPath) as! MovieCollectionViewCell
     
         let movieItem = movies[indexPath.row]
-        cell.configure(with: movieItem)
+        cell.configureMoviesCollection(with: movieItem)
         
         return cell
     }

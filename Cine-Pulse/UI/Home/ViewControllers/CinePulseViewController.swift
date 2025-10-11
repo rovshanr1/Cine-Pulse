@@ -57,8 +57,8 @@ class CinePulseViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
-            contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
@@ -68,7 +68,7 @@ class CinePulseViewController: UIViewController {
         vm.$movieList
             .sink(receiveValue: { [weak self] movie in
             guard let self = self else { return }
-                self.contentView.configure(with: movie)
+                self.contentView.configurePopularThisWeekMovies(with: movie)
         })
             .store(in: &cancellables)
         
