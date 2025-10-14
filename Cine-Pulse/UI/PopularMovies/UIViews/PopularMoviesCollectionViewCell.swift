@@ -26,6 +26,7 @@ class PopularMoviesCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        popularMovieImageView.kf.cancelDownloadTask()
         popularMovieImageView.image = nil
     }
     
@@ -45,10 +46,10 @@ class PopularMoviesCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(popularMovieImageView)
         
         NSLayoutConstraint.activate([
-            popularMovieImageView.topAnchor.constraint(equalTo: self.topAnchor),
-            popularMovieImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            popularMovieImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            popularMovieImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            popularMovieImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            popularMovieImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            popularMovieImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            popularMovieImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
     

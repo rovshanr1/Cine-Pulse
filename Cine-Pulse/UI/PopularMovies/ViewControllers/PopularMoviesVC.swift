@@ -28,7 +28,7 @@ class PopularMoviesVC: UIViewController {
         
         //VM binding
         bindViewModel()
-        vm.fetchNextPage()
+        vm.fetchInitialMovies()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,6 +39,12 @@ class PopularMoviesVC: UIViewController {
     
     //MARK: - Navigation Bar
     private func setupNavigationBar() {
+        let titleLabel = UILabel()
+        titleLabel.text = "Popular This Week"
+        titleLabel.font = UIFont(name: "proximanovacond-boldit", size: 42)
+        titleLabel.sizeToFit()
+        navigationItem.titleView = titleLabel
+        
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         
         let style = NavigationBarStyle.popularMovieStyle
@@ -51,6 +57,16 @@ class PopularMoviesVC: UIViewController {
         view.addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
         
+        contentView.onReachedEndOfList = { [weak self] in
+            guard let self = self else { return }
+            self.vm.fetchNextPage()
+        }
+        
+        contentView.onPullToRefresh = { [weak self] in
+            guard let self = self else { return }
+            
+            self.vm.fetchInitialMovies()
+        }
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),

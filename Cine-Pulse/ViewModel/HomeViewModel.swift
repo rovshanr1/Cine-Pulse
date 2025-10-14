@@ -10,7 +10,7 @@ import Combine
 
 class MovieListViewModel: ObservableObject {
     @Published private(set) var movieList: [MovieListModel.Movie] = []
-    @Published private(set) var error: String?
+    @Published var error: String?
     @Published private(set) var isLoading: Bool = false
  
     private let networking: Networking

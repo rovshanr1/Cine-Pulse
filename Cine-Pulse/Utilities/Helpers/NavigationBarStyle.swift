@@ -19,7 +19,7 @@ struct NavigationBarStyle{
     static var popularMovieStyle: UINavigationBarAppearance{
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .clear
+        appearance.backgroundColor = UIColor(named: "NavigationBarBackground")
         appearance.shadowColor = .clear
         return appearance
     }
