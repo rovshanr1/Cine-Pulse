@@ -20,7 +20,7 @@ struct MovieListModel: Codable {
 
 final class HomeViewModelTests: XCTestCase {
 
-    var sut: MovieListViewModel!
+    var sut: HomeViewModel!
     var mockNetworking: MockNetworking!
     private var cancellables: Set<AnyCancellable>!
     
@@ -28,7 +28,7 @@ final class HomeViewModelTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockNetworking = MockNetworking()
-        sut = MovieListViewModel(networking: mockNetworking)
+        sut = HomeViewModel(networking: mockNetworking)
         cancellables = Set<AnyCancellable>()
     }
     
@@ -64,7 +64,7 @@ final class HomeViewModelTests: XCTestCase {
         
         sut.fetchMovies()
         
-        wait(for: [expectetion], timeout: 5.0)
+        wait(for: [expectetion], timeout: 1.0)
         
         XCTAssertEqual(sut.error, error.localizedDescription)
         XCTAssertTrue(self.sut.movieList.isEmpty)

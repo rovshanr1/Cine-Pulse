@@ -1,5 +1,5 @@
 //
-//  MovieListViewModel.swift
+//  HomeViewModel.swift
 //  Cine-Pulse
 //
 //  Created by Rovshan Rasulov on 09.10.25.
@@ -8,10 +8,10 @@
 import Foundation
 import Combine
 
-class MovieListViewModel: ObservableObject {
-    @Published private(set) var movieList: [MovieListModel.Movie] = []
+class HomeViewModel: ObservableObject, BaseViewModel {
+    @Published var movieList: [MovieListModel.Movie] = []
     @Published var error: String?
-    @Published private(set) var isLoading: Bool = false
+    @Published var isLoading: Bool = false
  
     private let networking: Networking
     private var cancellables = Set<AnyCancellable>()
@@ -41,4 +41,5 @@ class MovieListViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
+    
 }

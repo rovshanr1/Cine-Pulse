@@ -8,10 +8,10 @@
 import Foundation
 import Combine
 
-class PopularMovieViewModel: ObservableObject{
-    @Published private(set) var movies: [MovieListModel.Movie] = []
-    @Published private(set) var errorMessage: String?
-    @Published private(set) var isLoading: Bool = false
+class PopularMovieViewModel: ObservableObject, BaseViewModel{
+    @Published var movieList: [MovieListModel.Movie] = []
+    @Published var error: String?
+    @Published var isLoading: Bool = false
     
     private let networking: Networking
     private var cancellables = Set<AnyCancellable>()
@@ -23,7 +23,7 @@ class PopularMovieViewModel: ObservableObject{
     }
     
     func fetchInitialMovies() {
-        movies.removeAll()
+        movieList.removeAll()
         currentPage = 1
         totalPages = 1
         fetchNextPage()
@@ -33,7 +33,7 @@ class PopularMovieViewModel: ObservableObject{
         guard !isLoading, currentPage <= totalPages else { return }
         
         isLoading = true
-        errorMessage = nil
+        error = nil
         
         networking.fetchData(TMDBEndpoint.movieList(query: nil, page: currentPage))
             .receive(on: DispatchQueue.main)
@@ -42,11 +42,11 @@ class PopularMovieViewModel: ObservableObject{
                 self.isLoading = false
             
                 if case .failure(let error) = completion {
-                    self.errorMessage = error.localizedDescription
+                    self.error = error.localizedDescription
                 }
             } receiveValue: { [weak self] (response: MovieListModel) in
                 guard let self = self else { return }
-                self.movies.append(contentsOf: response.results)
+                self.movieList.append(contentsOf: response.results)
                 currentPage += 1
                 self.totalPages = response.totalPages
             }

@@ -7,13 +7,21 @@
 
 import UIKit
 
+protocol PopularMoviesViewDelegate: AnyObject {
+    func didSelectMovie(at index: Int)
+}
+
+
 class PopularMoviesView: UIView {
     
     //identifier
     private let reuseIdentifier: String = "PopularMoviesCell"
     
-    //Movies
-    private var movies: [MovieListModel.Movie] = []
+    //View Model
+    private var popularMovieVM = PopularMovieViewModel()
+    
+    //Delegate
+    weak var delegate: PopularMoviesViewDelegate?
     
     //callback closure
     var onReachedEndOfList: (() -> Void)?
@@ -66,7 +74,7 @@ class PopularMoviesView: UIView {
     }
     
     func configurePopularMovies(with movies: [MovieListModel.Movie]) {
-        self.movies = movies
+        self.popularMovieVM.movieList = movies
         DispatchQueue.main.async {
             self.popularMoviesCollectionView.reloadData()
         }
@@ -77,31 +85,39 @@ class PopularMoviesView: UIView {
     }
 }
 
-
+//MARK: - UI Collection View Data Source Extension
 extension PopularMoviesView: UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movies.count
+        return popularMovieVM.movieList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PopularMoviesCollectionViewCell
         
-        let popularMovieItem = movies[indexPath.row]
+        let popularMovieItem = popularMovieVM.movieList[indexPath.row]
         cell.configurePopularMoviesCollection(with: popularMovieItem)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row == movies.count - 5{
+        if indexPath.row == vm.movieList.count - 5{
             onReachedEndOfList?()
             refreshController.endRefreshing()
         }
     }
 }
 
+//MARK: - UI Collection View Delegate Flow Layout Extension
 extension PopularMoviesView: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 100, height: 150)
+    }
+}
+
+//MARK: - UI Collection View Delegate Extension
+extension PopularMoviesView: UICollectionViewDelegate{
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.didSelectMovie(at: indexPath.row)
     }
 }

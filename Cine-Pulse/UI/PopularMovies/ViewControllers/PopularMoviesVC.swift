@@ -8,7 +8,9 @@
 import UIKit
 import Combine
 
-class PopularMoviesVC: UIViewController {
+class PopularMoviesVC: UIViewController, PopularMoviesViewDelegate {
+   
+    
     
     //Combine
     private var cancellabels = Set<AnyCancellable>()
@@ -18,6 +20,7 @@ class PopularMoviesVC: UIViewController {
     
     //Content View
     private let contentView = PopularMoviesView()
+    private let detailView = MovieDetailsVC()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +32,8 @@ class PopularMoviesVC: UIViewController {
         //VM binding
         bindViewModel()
         vm.fetchInitialMovies()
+        
+        contentView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,13 +82,25 @@ class PopularMoviesVC: UIViewController {
     
     //MARK: - Binding View Model
     private func bindViewModel(){
-        vm.$movies
+        vm.$movieList
             .sink(receiveValue: { [weak self] movies in
                 guard let self = self else { return }
                 
                 self.contentView.configurePopularMovies(with: movies)
             })
             .store(in: &cancellabels)
+    }
+    
+    //MARK: - PopularMovieView Delegate
+    func didSelectMovie(at index: Int) {
+        guard let selectedMovie = vm.movie(at: index) else{
+            print("Error: movie not found")
+            return
+        }
+        
+        print("get movie: \(selectedMovie.title)")
+        
+        navigationController?.pushViewController(detailView, animated: true)
     }
     
 }

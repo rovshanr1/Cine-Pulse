@@ -7,17 +7,18 @@
 
 import UIKit
 import Combine
-class CinePulseViewController: UIViewController {
-    
+class CinePulseViewController: UIViewController, MovieListViewDelegate {
+   
     //Combine
     private var cancellables = Set<AnyCancellable>()
     
     //ViewModels
-    private var vm = MovieListViewModel()
+    private var vm = HomeViewModel()
     
     //Views
     private let contentView = MovieListView()
-    private let vc = PopularMoviesVC()
+    private let popularMoviesVC = PopularMoviesVC()
+    private let movieDetailsVC = MovieDetailsVC()
     
     
     override func viewDidLoad() {
@@ -29,6 +30,8 @@ class CinePulseViewController: UIViewController {
         
         bindViewModel()
         vm.fetchMovies()
+        
+        contentView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -94,9 +97,21 @@ class CinePulseViewController: UIViewController {
         contentView.popularMovieNavigationButton.addTarget(self, action: #selector(navigationToPopularMovies), for: .touchUpInside)
     }
     
+    //MARK: - MovieListView Delegate
+    func didSelectMovie(at index: Int) {
+        guard let selectedMovie = vm.movie(at: index) else{
+            print("Error: movie not found")
+            return
+        }
+        
+        print("get movie: \(selectedMovie.title)")
+        
+        navigationController?.pushViewController(movieDetailsVC, animated: true)
+    }
+    
     //MARK: - Target objc func
     @objc private func navigationToPopularMovies() {
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(popularMoviesVC, animated: true)
     }
 }
 
