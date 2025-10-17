@@ -9,8 +9,6 @@ import UIKit
 import Combine
 
 class PopularMoviesVC: UIViewController, PopularMoviesViewDelegate {
-   
-    
     
     //Combine
     private var cancellabels = Set<AnyCancellable>()
@@ -32,7 +30,6 @@ class PopularMoviesVC: UIViewController, PopularMoviesViewDelegate {
         //VM binding
         bindViewModel()
         vm.fetchInitialMovies()
-        
         contentView.delegate = self
     }
     
@@ -69,9 +66,10 @@ class PopularMoviesVC: UIViewController, PopularMoviesViewDelegate {
         
         contentView.onPullToRefresh = { [weak self] in
             guard let self = self else { return }
-            
             self.vm.fetchInitialMovies()
         }
+        
+        
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -99,7 +97,6 @@ class PopularMoviesVC: UIViewController, PopularMoviesViewDelegate {
         }
         
         print("get movie: \(selectedMovie.title)")
-        
         navigationController?.pushViewController(detailView, animated: true)
     }
     

@@ -8,19 +8,12 @@
 import Foundation
 import Combine
 
-class PopularMovieViewModel: ObservableObject, BaseViewModel{
+final class PopularMovieViewModel: BaseViewModel, SelectedMovies{
     @Published var movieList: [MovieListModel.Movie] = []
-    @Published var error: String?
-    @Published var isLoading: Bool = false
-    
-    private let networking: Networking
-    private var cancellables = Set<AnyCancellable>()
     
     private var currentPage: Int = 1
     private var totalPages: Int = 1
-    init(networking: Networking = BaseNetworking()) {
-        self.networking = networking
-    }
+
     
     func fetchInitialMovies() {
         movieList.removeAll()
@@ -31,25 +24,15 @@ class PopularMovieViewModel: ObservableObject, BaseViewModel{
     
     func fetchNextPage() {
         guard !isLoading, currentPage <= totalPages else { return }
+        let endpoint = TMDBEndpoint.movieList(query: nil, page: currentPage)
         
-        isLoading = true
-        error = nil
-        
-        networking.fetchData(TMDBEndpoint.movieList(query: nil, page: currentPage))
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                guard let self = self else { return }
-                self.isLoading = false
+      
+        super.fetchData(from: endpoint) { [weak self] (response: MovieListModel) in
+            guard let self = self else { return }
             
-                if case .failure(let error) = completion {
-                    self.error = error.localizedDescription
-                }
-            } receiveValue: { [weak self] (response: MovieListModel) in
-                guard let self = self else { return }
-                self.movieList.append(contentsOf: response.results)
-                currentPage += 1
-                self.totalPages = response.totalPages
-            }
-            .store(in: &cancellables)
+            self.movieList.append(contentsOf: response.results)
+            self.currentPage += 1
+            self.totalPages = response.totalPages
+        }
     }
 }

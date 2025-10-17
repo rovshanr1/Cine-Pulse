@@ -18,7 +18,7 @@ class PopularMoviesView: UIView {
     private let reuseIdentifier: String = "PopularMoviesCell"
     
     //View Model
-    private var popularMovieVM = PopularMovieViewModel()
+    private var movie: [MovieListModel.Movie] = []
     
     //Delegate
     weak var delegate: PopularMoviesViewDelegate?
@@ -30,7 +30,7 @@ class PopularMoviesView: UIView {
     private let refreshController = UIRefreshControl()
     var onPullToRefresh: (() -> Void)?
     
-    private let vm = PopularMovieViewModel()
+    
     
     let popularMoviesCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -74,7 +74,7 @@ class PopularMoviesView: UIView {
     }
     
     func configurePopularMovies(with movies: [MovieListModel.Movie]) {
-        self.popularMovieVM.movieList = movies
+        self.movie = movies
         DispatchQueue.main.async {
             self.popularMoviesCollectionView.reloadData()
         }
@@ -88,20 +88,20 @@ class PopularMoviesView: UIView {
 //MARK: - UI Collection View Data Source Extension
 extension PopularMoviesView: UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return popularMovieVM.movieList.count
+        return movie.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PopularMoviesCollectionViewCell
         
-        let popularMovieItem = popularMovieVM.movieList[indexPath.row]
+        let popularMovieItem = movie[indexPath.row]
         cell.configurePopularMoviesCollection(with: popularMovieItem)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row == vm.movieList.count - 5{
+        if indexPath.row == movie.count - 5{
             onReachedEndOfList?()
             refreshController.endRefreshing()
         }
