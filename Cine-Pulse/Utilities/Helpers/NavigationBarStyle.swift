@@ -23,4 +23,11 @@ struct NavigationBarStyle{
         appearance.shadowColor = .clear
         return appearance
     }
+    
+    static var movieDetailStyle: UINavigationBarAppearance{
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .clear
+        appearance.shadowColor = .clear
+        return appearance
+    }
 }

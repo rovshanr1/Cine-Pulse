@@ -10,6 +10,7 @@ import Combine
 
 final class DetailViewModel: BaseViewModel{
     @Published var movieDetails: MovieDetailModel?
+    @Published var movieCredits: MovieCreditsModel?
 
     
     func fetchMovieDetails(id: Int){
@@ -20,5 +21,19 @@ final class DetailViewModel: BaseViewModel{
             self.movieDetails = response
         }
 
+    }
+    
+    func fetchMovieCredits(id: Int){
+        let endpoint = TMDBEndpoint.movieCredits(id: id)
+        
+        super.fetchData(from: endpoint) { [weak self] (response: MovieCreditsModel) in
+            guard let self = self else { return }
+            self.movieCredits = response
+        }
+    }
+    
+    func fetchData(id: Int){
+        fetchMovieCredits(id: id)
+        fetchMovieDetails(id: id)
     }
 }

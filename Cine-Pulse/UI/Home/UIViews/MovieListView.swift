@@ -18,7 +18,7 @@ class MovieListView: UIView {
     private let reusableCell: String = "PopularMovieCell"
     
     //ViewModel
-    private var vm = HomeViewModel()
+    private var movieList: [MovieListModel.Movie] = []
     
     //Delegate
     weak var delegate: MovieListViewDelegate?
@@ -75,7 +75,7 @@ class MovieListView: UIView {
     }
     
     func configurePopularThisWeekMovies(with movies: [MovieListModel.Movie]){
-        self.vm.movieList = movies
+        self.movieList = movies
         DispatchQueue.main.async {
             self.popularThisWeekMovieCollection.reloadData()
         }
@@ -86,13 +86,13 @@ class MovieListView: UIView {
 //MARK: - UI Collection View Data Source Extension
 extension MovieListView: UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return vm.movieList.count
+        return movieList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusableCell, for: indexPath) as! MovieCollectionViewCell
     
-        let movieItem = vm.movieList[indexPath.row]
+        let movieItem = movieList[indexPath.row]
         cell.configureMoviesCollection(with: movieItem)
         
         return cell

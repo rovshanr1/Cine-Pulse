@@ -18,7 +18,6 @@ class PopularMoviesVC: UIViewController, PopularMoviesViewDelegate {
     
     //Content View
     private let contentView = PopularMoviesView()
-    private let detailView = MovieDetailsVC()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,8 +95,10 @@ class PopularMoviesVC: UIViewController, PopularMoviesViewDelegate {
             return
         }
         
-        print("get movie: \(selectedMovie.title)")
-        navigationController?.pushViewController(detailView, animated: true)
+        let movieDetailVC = MovieDetailsVC()
+        
+        movieDetailVC.movieList = selectedMovie
+        navigationController?.pushViewController(movieDetailVC, animated: true)
     }
     
 }

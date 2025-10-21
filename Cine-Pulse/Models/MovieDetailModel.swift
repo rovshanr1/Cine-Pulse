@@ -55,3 +55,28 @@ struct MovieDetailModel: Codable{
     }
 }
 
+
+extension MovieDetailModel: Identifiable {
+    var backdropPathAsURL: URL? {
+        guard let backdropPath, !backdropPath.isEmpty else { return nil }
+        let baseURL = URL(string: "https://image.tmdb.org/t/p/w500")!
+        return baseURL.appendingPathComponent(backdropPath)
+    }
+    
+    var posterPathAsURL: URL? {
+        guard let posterPath, !posterPath.isEmpty else { return nil }
+        let baseURL = URL(string: "https://image.tmdb.org/t/p/w500")!
+        return baseURL.appendingPathComponent(posterPath)
+    }
+    
+    var extractYear: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        if let date = dateFormatter.date(from: releaseDate){
+            let year = Calendar.current.component(.year, from: date)
+            return "\(year)"
+        }else{
+            return String(releaseDate.prefix(4))
+        }
+    }
+}
