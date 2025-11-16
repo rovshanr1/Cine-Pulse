@@ -1,0 +1,51 @@
+//
+//  PopularMovieViewModel.swift
+//  Cine-Pulse
+//
+//  Created by Rovshan Rasulov on 09.10.25.
+//
+
+import Foundation
+import Combine
+
+final class AllMoviesViewModel: BaseViewModel, SelectedMovies{
+    @Published var movie: [MovieListModel.Movie] = []
+ 
+    private let category: MovieCategory
+    private var currentPage: Int = 1
+    private var totalPages: Int = 1
+
+    init(category: MovieCategory) {
+        self.category = category
+        super.init()
+    }
+    
+    func fetchInitialMovies() {
+        movie.removeAll()
+        currentPage = 1
+        totalPages = 1
+        fetchNextPage()
+    }
+    
+    
+    func fetchNextPage() {
+        guard !isLoading, currentPage <= totalPages else { return }
+        let endpoint = category.endpint(page: currentPage)
+        
+      
+        super.fetchData(from: endpoint) { [weak self] (response: MovieListModel) in
+            guard let self = self else { return }
+            
+            self.movie.append(contentsOf: response.results)
+            self.currentPage += 1
+            self.totalPages = response.totalPages
+            
+            
+        }
+    }
+    
+    func movie(at index: Int) -> MovieListModel.Movie? {
+        guard index < movie.count else { return nil }
+        return movie[index]
+    }
+}

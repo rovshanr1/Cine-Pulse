@@ -25,6 +25,12 @@ struct BaseNetworking: Networking {
                     }
                     
                     guard (200...299).contains(httpResponse.statusCode) else{
+                        
+                        print("status code: \(httpResponse.statusCode)")
+                        
+                        if let dataString = String(data: output.data, encoding: .utf8) {
+                            print("API Error Messages: \(dataString)")
+                        }
                         if httpResponse.statusCode == 404 {
                             throw NetworkErrors.notFound
                         }
@@ -44,7 +50,7 @@ struct BaseNetworking: Networking {
                         return decodingError
                     }
                     print("Decoding faild: \(error)")
-                    return NetworkErrors.decodingError(error)
+                    return NetworkErrors.decodingError(error.localizedDescription)
                     
                 }
                 .receive(on: DispatchQueue.main)

@@ -62,12 +62,12 @@ final class HomeViewModelTests: XCTestCase {
             }
             .store(in: &cancellables)
         
-        sut.fetchMovies()
+        sut.fetchPopularMovies()
         
         wait(for: [expectetion], timeout: 1.0)
         
         XCTAssertEqual(sut.error, error.localizedDescription)
-        XCTAssertTrue(self.sut.movieList.isEmpty)
+        XCTAssertTrue(self.sut.movie.isEmpty)
         XCTAssertFalse(self.sut.isLoading)
     }
     
@@ -92,7 +92,7 @@ final class HomeViewModelTests: XCTestCase {
             }
             .store(in: &cancellables)
         
-        sut.fetchMovies( )
+        sut.fetchPopularMovies( )
         
         wait(for: [expectetion], timeout: 1.0)
         

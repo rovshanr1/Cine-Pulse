@@ -40,7 +40,7 @@ extension Endpoint{
         guard let url = urlComponents.url else{
             throw NetworkErrors.invalidURL
         }
-        
+    
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
         request.allHTTPHeaderFields = headers

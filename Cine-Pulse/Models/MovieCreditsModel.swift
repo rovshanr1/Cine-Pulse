@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MovieCreditsModel: Codable {
+struct MovieCreditsModel: Codable, Identifiable {
     let id: Int
     let cast: [Cast]
     let crew: [Crew]
@@ -16,19 +16,33 @@ struct MovieCreditsModel: Codable {
         let id: Int
         let name: String
         let character: String?
+        let profilePath: String?
+        let originalName: String
     }
     
     struct Crew: Codable {
         let id: Int
         let name: String
-        let job: String
+        let profilePath: String?
         let department: String
+        let job: String
     }
-    
 }
 
 extension MovieCreditsModel {
     var director: String?{
         crew.first(where: { $0.job == "Director" })?.name
+    }
+}
+
+extension MovieCreditsModel.Crew {
+    var crewProfilePath: URL? {
+        .tmdbImage(path: profilePath)
+    }
+}
+
+extension MovieCreditsModel.Cast {
+    var castProfilePath: URL? {
+        .tmdbImage(path: profilePath)
     }
 }

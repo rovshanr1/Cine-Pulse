@@ -11,4 +11,8 @@ enum Secrets{
     static var tmdbAccessToken: String{
         Bundle.main.infoDictionary?["TMDB_ACCESS_TOKEN"] as? String ?? ""
     }
+    
+    static var traktClientID: String?{
+        Bundle.main.infoDictionary?["TRAKT_CLIENT_ID"] as? String ?? ""
+    }
 }

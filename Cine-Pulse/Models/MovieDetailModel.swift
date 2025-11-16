@@ -27,8 +27,9 @@ struct MovieDetailModel: Codable{
     let spokenLanguages: [SpokenLanguage]
     let status: String
     let title: String
+    let video: Bool
     let voteAverage: Double
-    
+        
     
     struct Genre: Codable{
         let id: Int
@@ -58,15 +59,11 @@ struct MovieDetailModel: Codable{
 
 extension MovieDetailModel: Identifiable {
     var backdropPathAsURL: URL? {
-        guard let backdropPath, !backdropPath.isEmpty else { return nil }
-        let baseURL = URL(string: "https://image.tmdb.org/t/p/w500")!
-        return baseURL.appendingPathComponent(backdropPath)
+        .tmdbImage(path: backdropPath)
     }
     
     var posterPathAsURL: URL? {
-        guard let posterPath, !posterPath.isEmpty else { return nil }
-        let baseURL = URL(string: "https://image.tmdb.org/t/p/w500")!
-        return baseURL.appendingPathComponent(posterPath)
+        .tmdbImage(path: posterPath)
     }
     
     var extractYear: String {

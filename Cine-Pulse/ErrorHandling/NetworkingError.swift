@@ -7,14 +7,14 @@
 
 import Foundation
 
-enum NetworkErrors: LocalizedError {
+enum NetworkErrors: LocalizedError, Equatable {
     case invalidURL
-    case decodingError(Error)
+    case decodingError(String)
     case noInternetConnection
     case misingAPIKey
     case invalidResponse
     case notFound
-    case unowned(Error)
+    case unowned(String)
     
     var errorDescription: String? {
         switch self {
@@ -31,7 +31,7 @@ enum NetworkErrors: LocalizedError {
         case .notFound:
             return "URL session failed"
         case .unowned(let error):
-            return error.localizedDescription
+            return error
         }
     }
 }

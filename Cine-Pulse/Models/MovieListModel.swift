@@ -27,9 +27,5 @@ struct MovieListModel: Codable{
 }
 
 extension MovieListModel.Movie: Identifiable {
-    var posterURL: URL? {
-        guard let posterPath, !posterPath.isEmpty else { return nil }
-        let baseURL = URL(string: "https://image.tmdb.org/t/p/w500")!
-        return baseURL.appendingPathComponent(posterPath)
-    }
+    var posterURL: URL? {.tmdbImage(path: posterPath)}
 }

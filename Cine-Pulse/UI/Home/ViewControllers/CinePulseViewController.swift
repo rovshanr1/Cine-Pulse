@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 class CinePulseViewController: UIViewController, MovieListViewDelegate {
-   
+    
     //Combine
     private var cancellables = Set<AnyCancellable>()
     
@@ -17,39 +17,24 @@ class CinePulseViewController: UIViewController, MovieListViewDelegate {
     
     //Views
     private let contentView = MovieListView()
-    private let popularMoviesVC = PopularMoviesVC()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(named: "Background")
+        view.backgroundColor = .background
+        navigationItem.title = "Cine-Pulse" 
         
         setupUI()
-        navigationActions()
         
         bindViewModel()
-        vm.fetchMovies()
-        
+        fetchData()
         contentView.delegate = self
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupNavigationBar()
-       
-    }
-    
-    //MARK: - Navigation Bar Style
-    private func setupNavigationBar() {
-        let titleLabel = UILabel()
-        titleLabel.text = "Cine Pulse"
-        titleLabel.font = UIFont(name: "proximanovacond-boldit", size: 42)
-        titleLabel.sizeToFit()
-        navigationItem.titleView = titleLabel
+        self.tabBarController?.tabBar.isHidden = false
         
-        let style = NavigationBarStyle.cinePulseStyle
-        navigationController?.navigationBar.standardAppearance = style
-        navigationController?.navigationBar.scrollEdgeAppearance = style
     }
     
     //MARK: - Setup UI
@@ -65,15 +50,34 @@ class CinePulseViewController: UIViewController, MovieListViewDelegate {
         ])
     }
     
+    private func fetchData(){
+        vm.fetchPopularMovies()
+        vm.fetchTopRatedMovies()
+        vm.fetchUpcomingMovies()
+    }
+    
     //MARK: - Binding View Model
     private func bindViewModel(){
-        vm.$movieList
+        vm.$movie
             .sink(receiveValue: { [weak self] movie in
-            guard let self = self else { return }
+                guard let self = self else { return }
                 self.contentView.configurePopularThisWeekMovies(with: movie)
-        })
+            })
             .store(in: &cancellables)
         
+        vm.$topRatedMovies
+            .sink { [weak self] movies in
+                guard let self = self else { return }
+                self.contentView.configureTopRatedMovies(with: movies)
+            }
+            .store(in: &cancellables)
+        vm.$upcomingMovies
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] movies in
+                guard let self = self else { return }
+                self.contentView.configureUpcomingMovies(with: movies)
+            }
+            .store(in: &cancellables)
         
         vm.$error
             .receive(on: DispatchQueue.main)
@@ -92,26 +96,33 @@ class CinePulseViewController: UIViewController, MovieListViewDelegate {
     }
     
     //MARK: - Navigation
-    private func navigationActions(){
-        contentView.popularMovieNavigationButton.addTarget(self, action: #selector(navigationToPopularMovies), for: .touchUpInside)
+    
+    func didTapSeeAllButton(for category: MovieCategory) {
+        let allMoviesVC = AllMoviesVC(category: category)
+        navigationController?.pushViewController(allMoviesVC, animated: true)
     }
     
     //MARK: - MovieListView Delegate
-    func didSelectMovie(at index: Int) {
-        guard let selectedMovie = vm.movie(at: index) else{
-            print("Error: movie not found")
-            return
+    func didSelectMovie(category: MovieCategory,at index: Int) {
+        let selectedMovie: MovieListModel.Movie?
+        
+        switch category{
+        case .popularMovie:
+            guard index < vm.movie.count else { return }
+            selectedMovie = vm.movie[index]
+        case .topRated:
+            guard index < vm.topRatedMovies.count else { return }
+            selectedMovie = vm.topRatedMovies[index]
+            
+        case .upcoming:
+            guard index < vm.upcomingMovies.count else { return }
+            selectedMovie = vm.upcomingMovies[index]
         }
         
-        let movieDetailVC = MovieDetailsVC()
+        guard let movie = selectedMovie else { return }
         
-        movieDetailVC.movieList = selectedMovie
+        let movieDetailVC = MovieDetailsVC(movieID: movie.id)
         navigationController?.pushViewController(movieDetailVC, animated: true)
-    }
-    
-    //MARK: - Target objc func
-    @objc private func navigationToPopularMovies() {
-        navigationController?.pushViewController(popularMoviesVC, animated: true)
     }
 }
 

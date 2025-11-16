@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		44A68B412E98398B00336F89 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 44A68B402E98398B00336F89 /* Kingfisher */; };
+		44F756412ECA44C900B86D36 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 44F756402ECA44C900B86D36 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44F756412ECA44C900B86D36 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +135,7 @@
 			);
 			name = CinePulseTests;
 			packageProductDependencies = (
+				44F756402ECA44C900B86D36 /* Kingfisher */,
 			);
 			productName = CinePulseTests;
 			productReference = 4460EDC22E91D50C00ECB2EB /* CinePulseTests.xctest */;
@@ -235,6 +238,7 @@
 				DEVELOPMENT_TEAM = 2Z3JZRB82A;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Cine-Pulse/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -264,6 +268,7 @@
 				DEVELOPMENT_TEAM = 2Z3JZRB82A;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Cine-Pulse/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -489,6 +494,11 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		44A68B402E98398B00336F89 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 44396E892E98390900F7A365 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		44F756402ECA44C900B86D36 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 44396E892E98390900F7A365 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;

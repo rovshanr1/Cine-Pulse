@@ -7,41 +7,46 @@
 
 import UIKit
 
-//MARK: - elected cell delegate
+//MARK: - Selected cell delegate
 protocol MovieListViewDelegate: AnyObject {
-    func didSelectMovie(at index: Int)
+    func didSelectMovie(category: MovieCategory, at index: Int)
+    func didTapSeeAllButton(for category: MovieCategory)
 }
 
 class MovieListView: UIView {
-
-    //identifier
-    private let reusableCell: String = "PopularMovieCell"
+    //Models
+    private var popularMovies: [MovieListModel.Movie] = []
+    private var topRatedMovies: [MovieListModel.Movie] = []
+    private var upcomingMovies: [MovieListModel.Movie] = []
     
-    //ViewModel
-    private var movieList: [MovieListModel.Movie] = []
+    private var activeSections: [MovieCategory] {
+        var sections: [MovieCategory] = []
+        
+        if !popularMovies.isEmpty { sections.append(.popularMovie) }
+        if !topRatedMovies.isEmpty { sections.append(.topRated) }
+        if !upcomingMovies.isEmpty { sections.append(.upcoming) }
+        
+        return sections
+    }
     
     //Delegate
     weak var delegate: MovieListViewDelegate?
     
-    let popularMovieNavigationButton: PopularMovieButton = {
-        let button = PopularMovieButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+
+    private let tableView: UITableView = {
+       let tableView = UITableView()
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
+        tableView.register(MovieCategoryRowCell.self, forCellReuseIdentifier: MovieCategoryRowCell.identifier)
+        return tableView
     }()
+
     
-    
-    let popularThisWeekMovieCollection: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .clear
-        collectionView.scrollsToTop = false
-        collectionView.showsHorizontalScrollIndicator = false
-        return collectionView
-    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupTableView()
         setupUI()
     }
     
@@ -50,67 +55,88 @@ class MovieListView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func setupTableView(){
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
     
     private func setupUI(){
-        addSubview(popularMovieNavigationButton)
-        addSubview(popularThisWeekMovieCollection)
-        
-        popularThisWeekMovieCollection.translatesAutoresizingMaskIntoConstraints = false
-        popularThisWeekMovieCollection.delegate = self
-        popularThisWeekMovieCollection.dataSource = self
-        popularThisWeekMovieCollection.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: reusableCell)
-        
-        popularThisWeekMovieCollection.contentInset.left = 12
+        addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            popularMovieNavigationButton.topAnchor.constraint(equalTo: topAnchor, constant: 12),
-            popularMovieNavigationButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            popularMovieNavigationButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            
-            popularThisWeekMovieCollection.topAnchor.constraint(equalTo: popularMovieNavigationButton.bottomAnchor, constant: 12),
-            popularThisWeekMovieCollection.leadingAnchor.constraint(equalTo: leadingAnchor),
-            popularThisWeekMovieCollection.trailingAnchor.constraint(equalTo: trailingAnchor),
-            popularThisWeekMovieCollection.heightAnchor.constraint(equalToConstant: 225)
+            tableView.topAnchor.constraint(equalTo: topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
     
     func configurePopularThisWeekMovies(with movies: [MovieListModel.Movie]){
-        self.movieList = movies
-        DispatchQueue.main.async {
-            self.popularThisWeekMovieCollection.reloadData()
+        self.popularMovies = movies
+        DispatchQueue.main.async{
+            self.tableView.reloadData()
         }
     }
     
+    func configureTopRatedMovies(with movies: [MovieListModel.Movie]){
+        self.topRatedMovies = movies
+        DispatchQueue.main.async{
+            self.tableView.reloadData()
+        }
+    }
+    
+    func configureUpcomingMovies(with movies: [MovieListModel.Movie]){
+        self.upcomingMovies = movies
+        DispatchQueue.main.async{
+            self.tableView.reloadData()
+        }
+    }
 }
 
 //MARK: - UI Collection View Data Source Extension
-extension MovieListView: UICollectionViewDataSource{
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movieList.count
+extension MovieListView: UITableViewDelegate, UITableViewDataSource{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return activeSections.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusableCell, for: indexPath) as! MovieCollectionViewCell
-    
-        let movieItem = movieList[indexPath.row]
-        cell.configureMoviesCollection(with: movieItem)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: MovieCategoryRowCell.identifier, for: indexPath) as! MovieCategoryRowCell
+        
+        cell.delegate = self
+        
+        let category = activeSections[indexPath.row]
+        
+        switch category{
+        case .popularMovie:
+            cell.configureRowCell(title: "Popular this week", with: popularMovies, category: .popularMovie)
+        case .topRated:
+            cell.configureRowCell(title: "Top Rated", with: topRatedMovies, category: .topRated)
+        case .upcoming:
+            cell.configureRowCell(title: "Upcoming", with: upcomingMovies, category: .upcoming)
+        }
         
         return cell
     }
-}
-
-//MARK: - UI Collection View Delegate Flow Layout Extension
-extension MovieListView: UICollectionViewDelegateFlowLayout{
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 150, height: 225)
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 283
     }
 }
 
-//MARK: - UI Collection View Delegate Extension
-extension MovieListView: UICollectionViewDelegate{
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.didSelectMovie(at: indexPath.row)
+extension MovieListView: MovieCategoryRowCellDelegate{
+    func cateforyButtonWasTapped(in cell: MovieCategoryRowCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let category = activeSections[indexPath.row]
+        delegate?.didTapSeeAllButton(for: category)
+    }
+    
+    func categoryCellDidSelectedMovie(at index: Int, in cell: MovieCategoryRowCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let category = activeSections[indexPath.row]
+        delegate?.didSelectMovie(category: category, at: index)
     }
 }
+
      
 

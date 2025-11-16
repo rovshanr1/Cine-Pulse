@@ -7,14 +7,14 @@
 
 import Foundation
 protocol SelectedMovies{
-    var movieList: [MovieListModel.Movie]   { get set }
+    var movie: [MovieListModel.Movie]   { get set }
 }
 
 extension SelectedMovies{
     func movie(at index: Int) -> MovieListModel.Movie? {
-        guard movieList.indices.contains(index) else {
+        guard movie.indices.contains(index) else {
             return nil
         }
-        return movieList[index]
+        return movie[index]
     }
 }
