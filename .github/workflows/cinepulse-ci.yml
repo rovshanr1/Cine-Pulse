@@ -26,7 +26,7 @@ jobs:
             -project Cine-Pulse.xcodeproj \
             -scheme Cine-Pulse \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.0'
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.0.1'
       - name: Run Tests
         env: 
           TMDB_ACCESS_TOKEN: "${{ secrets.TMDB_ACCESS_TOKEN }}"
@@ -35,6 +35,6 @@ jobs:
             -project Cine-Pulse.xcodeproj \
             -scheme Cine-Pulse \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.0'
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.0.1'
             
 

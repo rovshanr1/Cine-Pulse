@@ -19,7 +19,7 @@ struct MovieListModel: Codable {
 }
 
 final class HomeViewModelTests: XCTestCase {
-
+    
     var sut: HomeViewModel!
     var mockNetworking: MockNetworking!
     private var cancellables: Set<AnyCancellable>!
@@ -99,6 +99,6 @@ final class HomeViewModelTests: XCTestCase {
         XCTAssertFalse(sut.isLoading)
         XCTAssertEqual(loadingStates, [false, true, false])
     }
- 
     
 }
+

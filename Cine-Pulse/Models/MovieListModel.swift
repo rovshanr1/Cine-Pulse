@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct MovieListModel: Codable{
+struct MovieListModel: Codable, Equatable{
     let results: [Movie]
     let page: Int
     let totalPages: Int
     let totalResults: Int
     
-    struct Movie: Codable{
+    struct Movie: Codable, Equatable{
         let id: Int
         let adult: Bool
         let title: String
