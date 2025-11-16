@@ -41,7 +41,7 @@ This project is a portfolio application focusing on MVVM, Combine, networking an
 ---
 
 ## 📁 Project Structure
-
+```
 Cine-Pulse/
 
 ├── Application/              # Application startup files
@@ -153,7 +153,7 @@ Cine-Pulse/
     │   └── BaseNetworkTests.swift
     └── ViewModelTests/
         └── HomeViewModelTests.swift
-
+```
 
 ---
 
@@ -173,7 +173,6 @@ Cine-Pulse/
 
 - Implementing Combine in a real project
 - Cleanly implementing the MVVM architecture
-- Modularizing asynchronous networking
 - Creating a product with a UI/UX flow
 - Publishing an app that displays API-based content
 
@@ -196,6 +195,8 @@ Although this project is complete, maintenance and minor improvements will conti
   <img src="Screenshots/search.PNG" width="240" />
   <img src="Screenshots/actorDetail.PNG" width="240" />
   <img src="Screenshots/movieDetails.PNG" width="240" />
+  <img src="Screenshots/cast.PNG" width="240" />
+  <img src="Screenshots/popularMovie.PNG" width="240" />
 </p>
 
 
