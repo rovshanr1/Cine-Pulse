@@ -1,4 +1,4 @@
-# 🎬 CinePulseine-Pulse
+# 🎬 Cine Pulse
 CinePulse is a modern and high-performance iOS app that uses the TMDB API to discover movies and actors. Users can browse popular movies, view detail pages, explore actor profiles, and find content with advanced search.
 
 This project is a portfolio application focusing on MVVM, Combine, networking and modular architecture with Swif UIKit.
