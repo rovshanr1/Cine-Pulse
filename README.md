@@ -159,7 +159,7 @@ Cine-Pulse/
 
 ## 🔧 Technologies Used
 
-- Swift 5.10
+- Swift 6.2.1
 - UIKit
 - Combine
 - URLSession
