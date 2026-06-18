@@ -16,7 +16,7 @@ jobs:
 
 
       - name: Select Xcode
-        run:  maxim-lobanov/setup-xcode@v1
+        uses:  maxim-lobanov/setup-xcode@v1
         with: 
           xcode-version: '26.3'
 
