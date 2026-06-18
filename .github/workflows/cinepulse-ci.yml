@@ -27,7 +27,7 @@ jobs:
           xcodebuild clean build \
             -project Cine-Pulse.xcodeproj \
             -scheme Cine-Pulse \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.0.1'
+            -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.2'
       - name: Run Tests
         env: 
           TMDB_ACCESS_TOKEN: "${{ secrets.TMDB_ACCESS_TOKEN }}"
@@ -35,6 +35,6 @@ jobs:
           xcodebuild test \
             -project Cine-Pulse.xcodeproj \
             -scheme Cine-Pulse \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.0.1'
+            -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.2'
             
 
